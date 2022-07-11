@@ -1,7 +1,7 @@
 name: Tests_cd
 on:
   push:
-    [ 'dev' ]
+    branches: [ 'dev' ]
 jobs:
   open_PR:
     name: Open_PullRequest
