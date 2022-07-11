@@ -38,7 +38,7 @@ jobs:
         with:
           token: ${{ secrets.ACCESS_TOKEN }}
           commit-message: Automated PR
-          branch: homolog
-          base: release
+          branch: release
+          base: homolog
           title: 'Automated - homolog to release'
           reviewers: TiagoMPereira
