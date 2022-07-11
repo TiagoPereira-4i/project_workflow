@@ -1,0 +1,44 @@
+name: Tests_cd
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      [ 'homolog' ]
+
+jobs:
+  testing_scripts:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.9"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Testing with pytest
+        run: |
+          pytest -vv
+
+  open_PR:
+    needs: [testing_scripts]
+    name: Open_PullRequest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+
+        with:
+          token: ${{ secrets.ACCESS_TOKEN }}
+          commit-message: Automated PR
+          branch: release
+          base: homolog
+          title: 'Automated - homolog to release'
+          reviewers: TiagoMPereira
