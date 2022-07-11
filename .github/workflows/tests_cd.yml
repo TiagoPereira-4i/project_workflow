@@ -24,21 +24,3 @@ jobs:
       - name: Testing with pytest
         run: |
           pytest -vv
-
-  open_PR:
-    needs: [testing_scripts]
-    name: Open_PullRequest
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v4
-
-        with:
-          token: ${{ secrets.ACCESS_TOKEN }}
-          commit-message: Automated PR
-          branch: release
-          base: homolog
-          title: 'Automated - homolog to release'
-          reviewers: TiagoMPereira
