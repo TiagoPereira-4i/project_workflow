@@ -1,4 +1,4 @@
-name: Tests_cd
+name: PR_Homolog
 on:
   push:
     branches: [ 'dev' ]
