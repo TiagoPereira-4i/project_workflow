@@ -1,4 +1,4 @@
-name: Tests_cd
+name: Flow
 on:
   pull_request:
     types:
@@ -25,20 +25,19 @@ jobs:
         run: |
           pytest -vv
 
-  open_PR:
+  pull-request-release:
     needs: [testing_scripts]
-    name: Open_PullRequest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v4
-
-        with:
-          token: ${{ secrets.ACCESS_TOKEN }}
-          commit-message: Automated PR
-          branch: release
-          base: homolog
-          title: 'Automated - homolog to release'
-          reviewers: TiagoMPereira
+    - uses: actions/checkout@v2
+    - name: PR_to_Release
+      uses: repo-sync/pull-request@v2
+      with:
+        source_branch: "homolog"                                 # If blank, default: triggered branch
+        destination_branch: "release"                      # If blank, default: master
+        pr_title: "Pulling homolog into release"              # Title of pull request
+        pr_body: ":robot: *Automated PR*"              # Full markdown support, requires pr_title to be set
+        pr_reviewer: "TiagoMPereira"                         # Comma-separated list (no spaces)
+        pr_assignee: "TiagoPereira-4i"                         # Comma-separated list (no spaces)
+        pr_allow_empty: true                              # Creates pull request even if there are no changes
+        github_token: ${{ secrets.ACCESS_TOKEN }}
