@@ -1,0 +1,44 @@
+name: URL modifier
+
+on:
+  push:
+    branches:
+      [ 'release' ]
+
+jobs:
+  text-modifier:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Domain access
+        uses: jacobtomlinson/gha-find-replace@v2
+        with:
+          find: "domain = *"
+          replace: "domain = fake.production.com"
+          include: "config/auth.ini"
+          regex: true
+
+      - name: Id access
+        uses: jacobtomlinson/gha-find-replace@v2
+        with:
+          find: "id = *"
+          replace: "id = IdEnTiFiCaDoR"
+          include: "config/auth.ini"
+          regex: true
+
+      - name: URL endpoint
+        uses: jacobtomlinson/gha-find-replace@v2
+        with:
+          find: "-hmg-"
+          replace: "-prod-"
+          regex: false
+          include: "roots/**"
+
+      - name: add & commit
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: "[BOT - URL's and endpoints modified]"
+          add: '.'
+          commit: ''
+          cwd: '.'
