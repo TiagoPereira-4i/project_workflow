@@ -27,7 +27,7 @@ jobs:
 
 
   test-result:    
-    name: Test Result
+    name: Local Tests
     runs-on: ubuntu-latest
     needs: testing_scripts
     if: ${{ always() }}
