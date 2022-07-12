@@ -24,3 +24,20 @@ jobs:
       - name: Testing with pytest
         run: |
           pytest -vv
+
+  pull-request-release:
+    needs: [testing_scripts]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: PR_to_Release
+      uses: repo-sync/pull-request@v2
+      with:
+        source_branch: "homolog"                                 # If blank, default: triggered branch
+        destination_branch: "release"                      # If blank, default: master
+        pr_title: "Pulling homolog into release"              # Title of pull request
+        pr_body: ":robot: *Automated PR*"              # Full markdown support, requires pr_title to be set
+        pr_reviewer: "TiagoMPereira"                         # Comma-separated list (no spaces)
+        pr_assignee: "TiagoPereira-4i"                         # Comma-separated list (no spaces)
+        pr_allow_empty: true                              # Creates pull request even if there are no changes
+        github_token: ${{ secrets.ACCESS_TOKEN }}
