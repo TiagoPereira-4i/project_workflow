@@ -25,6 +25,19 @@ jobs:
         run: |
           pytest -vv
 
+
+  test-result:    
+    name: Test Result
+    runs-on: ubuntu-latest
+    needs: testing_scripts
+    if: ${{ always() }}
+    environment: APPROVERS
+    steps:
+      - name: Review Results
+        run: "echo APPROVED!"
+
+
+
   pull-request-release:
     needs: [testing_scripts]
     runs-on: ubuntu-latest
@@ -35,7 +48,7 @@ jobs:
       with:
         source_branch: "homolog"                                 # If blank, default: triggered branch
         destination_branch: "release"                      # If blank, default: master
-        pr_title: "Pulling homolog into release"              # Title of pull request
+        pr_title: "Homolog into release"              # Title of pull request
         pr_body: ":robot: *Automated PR*"              # Full markdown support, requires pr_title to be set
         pr_reviewer: "TiagoMPereira"                         # Comma-separated list (no spaces)
         pr_assignee: "TiagoPereira-4i"                         # Comma-separated list (no spaces)
