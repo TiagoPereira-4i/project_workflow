@@ -38,6 +38,6 @@ jobs:
         uses: EndBug/add-and-commit@v9
         with:
           message: "[BOT - URL's and endpoints modified]"
-          add: '.'
+          add: '*.py'
           commit: ''
           cwd: '.'
